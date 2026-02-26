@@ -39,7 +39,7 @@ public class CsvService {
       writer.writeNext(new String[]{
         splitDto.getId().toString(),
         splitDto.getLocalDateTime().toString(),
-        splitDto.isCendrine() ? "1" : null,
+        String.valueOf(splitDto.isPerson()),
         String.valueOf(splitDto.getAmount()),
         splitDto.getDescription()
       });
@@ -95,6 +95,7 @@ public class CsvService {
     try (Reader reader = Files.newBufferedReader(DB_FILE.toPath())) {
       CsvToBeanBuilder<SplitDto> builder = new CsvToBeanBuilder<SplitDto>(reader)
         .withType(SplitDto.class)
+        .withSeparator(';')
         .withIgnoreEmptyLine(true);
 
       if (filter != null) {

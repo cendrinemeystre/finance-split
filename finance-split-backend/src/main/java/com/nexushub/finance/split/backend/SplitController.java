@@ -1,12 +1,14 @@
 package com.nexushub.finance.split.backend;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController("split")
@@ -34,11 +36,13 @@ public class SplitController {
 
   @PostMapping("/add")
   public SplitDto[] addSplit(@RequestBody SplitDto splitDto) {
+    splitDto.setId(UUID.randomUUID());
+    splitDto.setLocalDateTime(LocalDateTime.now());
     splitService.addSplit(splitDto);
     return splitService.findAll();
   }
 
-  @PostMapping("/remove/{id}")
+  @DeleteMapping("/remove/{id}")
   public void removeSplit(@PathVariable("id") String id) {
     splitService.removeSplit(UUID.fromString(id));
   }

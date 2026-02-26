@@ -1,6 +1,7 @@
 export interface SplitEntry {
-  date?: Date;
+  id?: string;
+  localDateTime?: Date;
+  person: boolean;
   amount: number;
-  cendrine: boolean;
   description: string;
 }
