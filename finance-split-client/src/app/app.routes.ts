@@ -6,17 +6,17 @@ export const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'home',
+        path: 'split',
         component: Home
       },
       {
         path: '**',
-        redirectTo: 'home'
+        redirectTo: 'split'
       }
     ]
   },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'split'
   }
 ];

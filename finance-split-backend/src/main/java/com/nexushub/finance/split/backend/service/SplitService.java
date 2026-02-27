@@ -1,11 +1,11 @@
-package com.nexushub.finance.split.backend;
+package com.nexushub.finance.split.backend.service;
 
+import com.nexushub.finance.split.backend.api.SplitDto;
 import com.nexushub.finance.split.backend.filter.DescriptionFilter;
 import com.nexushub.finance.split.backend.filter.PersonFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,8 +14,7 @@ public class SplitService {
   private final CsvService csvService;
 
   public SplitDto[] findAll() {
-    List<SplitDto> dtos = csvService.readFile();
-    return dtos.toArray(new SplitDto[0]);
+    return csvService.readFile().toArray(new SplitDto[0]);
   }
 
   public SplitDto[] findByPerson(boolean cendrine) {

@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="card-header">
+    <h1 class="modal-title">Finance</h1>
+  </div>
+  <div class="card-body table-responsive">
+    @let list = serviceController.splitEntryList$();
+    @if (list.length > 0) {
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>By</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (entry of list; track entry.id) {
+            <tr>
+              <td>
+                <p  [ngbTooltip]="entry.localDateTime | fsDate">
+                  {{ entry.localDateTime | date }}
+                </p>
+              </td>
+              <td>{{ entry.amount }}</td>
+              <td>{{ entry.description }}</td>
+              <td>{{ entry.person ? 'Cendrine' : 'Patrick' }}</td>
+              <td>
+                @if (entry.id) {
+                  <button class="btn btn-outline-danger" (click)="remove(entry!.id)">
+                    <span class="fas fa-trash"></span>
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="card-text">No Entries</p>
+    }
+  </div>
+</div>

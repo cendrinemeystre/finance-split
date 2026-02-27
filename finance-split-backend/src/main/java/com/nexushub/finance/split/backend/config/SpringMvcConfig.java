@@ -1,4 +1,4 @@
-package com.nexushub.finance.split.backend;
+package com.nexushub.finance.split.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

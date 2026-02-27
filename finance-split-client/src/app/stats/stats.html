@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between">
+    <h1 class="modal-title">Stats</h1>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <label>
+        Total:
+        <input type="text" class="form-control" [disabled]="true" [value]="statsController.statDto$().total">
+      </label>
+    </div>
+    <div class="row d-flex">
+      <label class="col-6 flex-fill">
+        Cendrine:
+        <input type="text" class="form-control" [disabled]="true" [value]="statsController.statDto$().cendrine">
+      </label>
+      <label class="col-6 flex-fill">
+        Patrick:
+        <input type="text" class="form-control" [disabled]="true" [value]="statsController.statDto$().patrick">
+      </label>
+    </div>
+  </div>
+</div>

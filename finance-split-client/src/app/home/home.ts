@@ -1,48 +1,34 @@
-import {Component, signal} from '@angular/core';
-import {SplitEntry} from './split-entry';
-import {FieldTree, form, FormField, min, required} from '@angular/forms/signals';
+import {Component, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {NgClass} from '@angular/common';
-import {ServiceController} from '../service/service-controller';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {Split} from '../split/split';
+import {Finance} from '../finance/finance';
+import {Stats} from '../stats/stats';
 
 @Component({
   selector: 'fs-home',
   imports: [
-    FormField,
     ReactiveFormsModule,
-    MatSlideToggle,
-    NgClass
+    NgClass,
+    Split,
+    Finance,
+    Stats
   ],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {
-  splitEntryForm: FieldTree<SplitEntry>;
+export class Home implements OnInit {
+  private readonly _isMobile: WritableSignal<boolean> = signal(false);
+  public isMobile: Signal<boolean> = this._isMobile.asReadonly();
 
-  constructor(protected serviceController: ServiceController) {
-    const splitEntry = signal<SplitEntry>({
-      amount: 0,
-      person: false,
-      description: ''
-    })
-    this.splitEntryForm = form(splitEntry, entry => {
-      required(entry.amount);
-      min(entry.amount, 0, {message: 'It must be a positive number'})
-    });
-    this.serviceController.findAll();
+  constructor(private readonly breakpointObserver: BreakpointObserver) {
   }
 
-  public add(): void {
-    const entry: SplitEntry = {
-      person: this.splitEntryForm.person().value(),
-      amount: this.splitEntryForm.amount().value(),
-      description: this.splitEntryForm.description().value(),
-    };
-    this.serviceController.add(entry);
-  }
-
-  public remove(id: string): void {
-    this.serviceController.remove(id);
+  ngOnInit() {
+    this.breakpointObserver.observe([Breakpoints.Handset])
+      .subscribe(result => {
+        this._isMobile.set(result.matches)
+      });
   }
 }

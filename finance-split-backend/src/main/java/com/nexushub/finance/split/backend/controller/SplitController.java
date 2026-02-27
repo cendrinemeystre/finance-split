@@ -1,6 +1,8 @@
-package com.nexushub.finance.split.backend;
+package com.nexushub.finance.split.backend.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
+import com.nexushub.finance.split.backend.api.SplitDto;
+import com.nexushub.finance.split.backend.service.SplitService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,13 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
 @RestController("split")
 public class SplitController {
   private final SplitService splitService;
-
-  public SplitController(SplitService service) {
-    splitService = service;
-  }
 
   @GetMapping("/all")
   public SplitDto[] findAll() {

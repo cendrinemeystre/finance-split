@@ -1,5 +1,7 @@
-package com.nexushub.finance.split.backend;
+package com.nexushub.finance.split.backend.service;
 
+import com.nexushub.finance.split.backend.api.SplitDto;
+import com.nexushub.finance.split.backend.api.SplitTotalDto;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
@@ -56,6 +58,9 @@ public class CsvService {
       String[] line;
       boolean isHeader = true;
       while ((line = reader.readNext()) != null) {
+        for (int i = 0; i < line.length; i++) {
+          line[i] = line[i].replace("\"", "");
+        }
         if (isHeader) {
           writer.writeNext(line); // Write header to temp file
           isHeader = false;
@@ -103,6 +108,29 @@ public class CsvService {
       }
 
       CsvToBean<SplitDto> csvToBean = builder.build();
+      return csvToBean.parse();
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to read data from CSV file", e);
+    }
+  }
+
+  public List<SplitTotalDto> readFileForTotal() {
+    return readFileForTotal(null);
+  }
+
+  public List<SplitTotalDto> readFileForTotal(CsvToBeanFilter filter) {
+    // Read CSV file and return list of SplitDto objects
+    try (Reader reader = Files.newBufferedReader(DB_FILE.toPath())) {
+      CsvToBeanBuilder<SplitTotalDto> builder = new CsvToBeanBuilder<SplitTotalDto>(reader)
+        .withType(SplitTotalDto.class)
+        .withSeparator(';')
+        .withIgnoreEmptyLine(true);
+
+      if (filter != null) {
+        builder.withFilter(filter); // Apply filter if provided
+      }
+
+      CsvToBean<SplitTotalDto> csvToBean = builder.build();
       return csvToBean.parse();
     } catch (IOException e) {
       throw new RuntimeException("Failed to read data from CSV file", e);

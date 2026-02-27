@@ -1,0 +1,29 @@
+.card-rainbow {
+  animation: hueRotate 6s linear infinite;
+}
+
+.card-gradient {
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 300% 100%;
+  animation: ledFlow 6s linear infinite;
+}
+
+@keyframes hueRotate {
+  from { background-color: hsl(0, 100%, 50%)}
+  to {background-color: hsl(260, 100%, 50%)}
+}
+
+@keyframes ledFlow {
+  from { background-position: 100% 50%; }
+  to   { background-position: 0 50%; }
+}
