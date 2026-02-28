@@ -2,18 +2,14 @@ package com.nexushub.finance.split.backend.service;
 
 import com.nexushub.finance.split.backend.api.SplitDto;
 import com.nexushub.finance.split.backend.api.SplitTotalDto;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.CsvToBeanFilter;
-import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -51,27 +47,24 @@ public class CsvService {
   }
 
   public void removeDto(UUID id) {
-    // Remove specific entry by UUID from CSV file
-    try (CSVReader reader = new CSVReader(new FileReader(DB_FILE));
-         CSVWriter writer = new CSVWriter(new FileWriter(TEMP_FILE))) {
-
-      String[] line;
-      boolean isHeader = true;
-      while ((line = reader.readNext()) != null) {
-        for (int i = 0; i < line.length; i++) {
-          line[i] = line[i].replace("\"", "");
-        }
-        if (isHeader) {
-          writer.writeNext(line); // Write header to temp file
-          isHeader = false;
-        } else {
-          if (!line[0].equals(id.toString())) {
-            writer.writeNext(line); // Write line if ID doesn't match
-          }
-        }
+    List<SplitDto> dtoList = readFile();
+    dtoList.removeIf(splitDto -> splitDto.getId().toString().equals(id.toString()));
+    try (ICSVWriter writer = new CSVWriterBuilder(new FileWriter(TEMP_FILE))
+      .withSeparator(';')
+      .withQuoteChar('"')
+      .build()) {
+      writer.writeNext(new String[]{"id", "localDateTime", "person", "amount", "description"});
+      for (SplitDto splitDto : dtoList) {
+        String[] dto = {
+          splitDto.getId().toString(),
+          splitDto.getLocalDateTime().toString(),
+          String.valueOf(splitDto.isPerson()),
+          String.valueOf(splitDto.getAmount()),
+          splitDto.getDescription()
+        };
+        writer.writeNext(dto, true);
       }
-
-    } catch (IOException | CsvValidationException e) {
+    } catch (IOException e) {
       throw new RuntimeException("Failed to remove data from CSV file", e);
     }
 
@@ -82,7 +75,6 @@ public class CsvService {
         if (!temp.renameTo(DB_FILE)) {
           throw new RuntimeException("Failed to rename temp file to the original DB file.");
         }
-        System.out.println("Line removed successfully.");
       } else {
         throw new RuntimeException("Error deleting the original file.");
       }
