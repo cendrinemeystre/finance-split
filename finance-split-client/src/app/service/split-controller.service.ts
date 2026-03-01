@@ -2,6 +2,8 @@ import {Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {SplitEntry} from './split-entry';
 import {StatsControllerService} from './stats-controller.service';
+import {FinanceFilter} from './finance-filter';
+import {Person} from './person';
 
 @Injectable({
   providedIn: 'root',
@@ -22,16 +24,23 @@ export class SplitController {
     });
   }
 
-  public findPerson(cendrine: boolean) {
-    this.http.get('http://localhost:8080/' + cendrine).subscribe({
-      next: value => {
-        this._splitEntryListSignal.set(<SplitEntry[]>value);
-      }
-    })
-  }
-
-  public findDescription(description: string) {
-    this.http.get('http://localhost:8080/' + description).subscribe({
+  public filter(filter: FinanceFilter) {
+    let url: string = '';
+    if (filter.person === Person.CENDRINE) {
+      url += 'CENDRINE'
+    } else if (filter.person === Person.PATRICK) {
+      url += 'PATRICK';
+    } else {
+      url += 'BOTH';
+    }
+    url += '/';
+    if (filter.description) {
+      url += filter.description;
+    } else {
+      url += null;
+    }
+    console.log(url)
+    this.http.get('http://localhost:8080/filter/' + url).subscribe({
       next: value => {
         this._splitEntryListSignal.set(<SplitEntry[]>value);
       }

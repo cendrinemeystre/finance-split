@@ -23,14 +23,10 @@ public class SplitController {
     return splitService.findAll();
   }
 
-  @GetMapping("/{person}")
-  public SplitDto[] findByPerson(@PathVariable("person") boolean person) {
-    return splitService.findByPerson(person);
-  }
-
-  @GetMapping("/{description}")
-  public SplitDto[] findByDescription(@PathVariable("description") String description) {
-    return splitService.findByDescription(description);
+  @GetMapping("/filter/{person}/{description}")
+  public SplitDto[] findByPerson(@PathVariable("person") String person,
+                                 @PathVariable("description") String description) {
+    return splitService.findByPerson(person, description);
   }
 
   @PostMapping("/add")

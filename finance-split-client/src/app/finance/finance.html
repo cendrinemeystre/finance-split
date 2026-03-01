@@ -2,10 +2,33 @@
   <div class="card-header">
     <h1 class="modal-title">Finance</h1>
   </div>
+  <div class="card-body row d-flex">
+    <div class="col-8">
+      <label class="form-label me-2">
+        Description:
+        <input type="text" class="form-control" [formField]="financeFilterForm.description">
+      </label>
+      <label class="form-labelflex-column">
+        Person:
+        <select class="form-select" [formField]="financeFilterForm.person">
+          @for (person of Person; track person) {
+            <option [value]="person">{{ person }}</option>
+          }
+        </select>
+      </label>
+    </div>
+    <div class="col-4 align-self-end mb-2">
+      <button type="button" class="btn btn-outline-secondary me-2" (click)="clear()">Clear
+      </button>
+      <button type="button" class="btn btn-outline-primary" (click)="filter()">Filter
+      </button>
+    </div>
+  </div>
+  <hr>
   <div class="card-body table-responsive">
     @let list = serviceController.splitEntryList$();
     @if (list.length > 0) {
-      <table class="table">
+      <table class="table table-striped">
         <thead>
         <tr>
           <th>Date</th>
@@ -19,7 +42,7 @@
           @for (entry of list; track entry.id) {
             <tr>
               <td>
-                <p  [ngbTooltip]="entry.localDateTime | fsDate">
+                <p [ngbTooltip]="entry.localDateTime | fsDate">
                   {{ entry.localDateTime | date }}
                 </p>
               </td>

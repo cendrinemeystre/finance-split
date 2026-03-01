@@ -1,4 +1,4 @@
-import {Component, Input, signal} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {NgClass} from '@angular/common';
 import {FieldTree, form, FormField, min, required} from '@angular/forms/signals';
@@ -17,6 +17,13 @@ import {SplitEntry} from '../service/split-entry';
 })
 export class Split {
   splitEntryForm: FieldTree<SplitEntry>;
+  suggestions: string[] = [
+    'Ibby',
+    'ichoufe',
+    'Galaxus/Digitec',
+    'Bstelle',
+    'Mobility'
+  ]
 
   constructor(protected serviceController: SplitController) {
     const splitEntry = signal<SplitEntry>({
@@ -26,7 +33,8 @@ export class Split {
     })
     this.splitEntryForm = form(splitEntry, entry => {
       required(entry.amount);
-      min(entry.amount, 0, {message: 'It must be a positive number'})
+      required(entry.description);
+      min(entry.amount, 0, {message: 'It must be a positive number'});
     });
   }
 

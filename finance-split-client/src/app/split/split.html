@@ -6,20 +6,32 @@
                       [formField]="splitEntryForm.person">
     </mat-slide-toggle>
   </div>
-  <div class="card-body d-flex">
-    <label for="amount" class="me-2 form-label">
-      Amount:
-      <input type="number" class="form-control" [formField]="splitEntryForm.amount">
-      @for (error of this.splitEntryForm.amount().errors(); track error) {
-        <p class="text-danger-emphasis">{{ error.message }}</p>
-      }
-    </label>
-    <label for="description" class="me-2 form-label flex-fill">
-      Description:
-      <input class="form-control" type="text" [formField]="splitEntryForm.description">
-    </label>
+  <div class="card-body">
+    <div class="d-flex">
+      <label for="amount" class="me-2 form-label">
+        Amount:
+        <input type="number" class="form-control" [formField]="splitEntryForm.amount">
+        @for (error of this.splitEntryForm.amount().errors(); track error) {
+          <p class="text-danger-emphasis">{{ error.message }}</p>
+        }
+      </label>
+      <label for="description" class="me-2 form-label flex-fill">
+        Description:
+        <input class="form-control" type="text" [formField]="splitEntryForm.description">
+      </label>
+    </div>
+    <div>
+      <ul class="list-group">
+        @for (suggestion of suggestions; track suggestion) {
+          <li class="list-group-item">
+            <input type="radio" [value]="suggestion" [formField]="splitEntryForm.description"/>
+            {{ suggestion }}
+          </li>
+        }
+      </ul>
+    </div>
   </div>
   <div class="card-footer text-end">
-    <button class="btn btn-success" [disabled]="splitEntryForm.amount().invalid()" (click)="add()">Save</button>
+    <button class="btn btn-success" [disabled]="splitEntryForm().invalid" (click)="add()">Save</button>
   </div>
 </div>
