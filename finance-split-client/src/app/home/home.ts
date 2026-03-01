@@ -1,4 +1,4 @@
-import {Component, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
@@ -19,8 +19,7 @@ import {Stats} from '../stats/stats';
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
-  private readonly _isMobile: WritableSignal<boolean> = signal(false);
-  public isMobile: Signal<boolean> = this._isMobile.asReadonly();
+  protected readonly isMobile: WritableSignal<boolean> = signal(false);
 
   constructor(private readonly breakpointObserver: BreakpointObserver) {
   }
@@ -28,7 +27,7 @@ export class Home implements OnInit {
   ngOnInit() {
     this.breakpointObserver.observe([Breakpoints.Handset])
       .subscribe(result => {
-        this._isMobile.set(result.matches)
+        this.isMobile.set(result.matches)
       });
   }
 }

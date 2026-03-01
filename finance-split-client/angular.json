@@ -42,6 +42,8 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/assets",
+              "src/assets/images",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -50,7 +52,8 @@
             "styles": [
               "src/material-theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "polyfills": [
               "@angular/localize/init"
@@ -61,7 +64,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "1mB",
                   "maximumError": "1MB"
                 },
                 {
