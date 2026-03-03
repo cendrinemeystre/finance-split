@@ -7,6 +7,7 @@ import com.opencsv.ICSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.CsvToBeanFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,19 +20,24 @@ import java.util.UUID;
 
 @Service
 public class CsvService {
-  private static final String BASE = System.getProperty("user.home") + "/finance-split/";
+  @Value("${base.dir}")
+  public String baseDir;
 
-  private static final File DB_FILE = new File(BASE + "db.csv");
+  @Value("${file.data:data.csv}")
+  public File dataFile;
 
-  private static final String TEMP_FILE = BASE + "temp.csv";
+  @Value("${file.temp:temp.csv}")
+  public String tempFile;
 
   public CsvService() {
-    DB_FILE.mkdir();
+    dataFile = new File(baseDir + "db.csv");
+    tempFile = baseDir + "temp.csv";
+    dataFile.mkdir();
   }
 
   public void addDto(SplitDto splitDto) {
     // Write data to CSV file using CSVWriter
-    try (ICSVWriter writer = new CSVWriterBuilder(new FileWriter(DB_FILE, true))
+    try (ICSVWriter writer = new CSVWriterBuilder(new FileWriter(dataFile, true))
       .withSeparator(';')
       .build()) {
       writer.writeNext(new String[]{
@@ -49,7 +55,7 @@ public class CsvService {
   public void removeDto(UUID id) {
     List<SplitDto> dtoList = readFile();
     dtoList.removeIf(splitDto -> splitDto.getId().toString().equals(id.toString()));
-    try (ICSVWriter writer = new CSVWriterBuilder(new FileWriter(TEMP_FILE))
+    try (ICSVWriter writer = new CSVWriterBuilder(new FileWriter(tempFile))
       .withSeparator(';')
       .withQuoteChar('"')
       .build()) {
@@ -70,9 +76,9 @@ public class CsvService {
 
     // Replace original file with updated temp file
     try {
-      if (DB_FILE.delete()) {
-        File temp = new File(TEMP_FILE);
-        if (!temp.renameTo(DB_FILE)) {
+      if (dataFile.delete()) {
+        File temp = new File(tempFile);
+        if (!temp.renameTo(dataFile)) {
           throw new RuntimeException("Failed to rename temp file to the original DB file.");
         }
       } else {
@@ -89,7 +95,7 @@ public class CsvService {
 
   public List<SplitDto> readFile(CsvToBeanFilter filter) {
     // Read CSV file and return list of SplitDto objects
-    try (Reader reader = Files.newBufferedReader(DB_FILE.toPath())) {
+    try (Reader reader = Files.newBufferedReader(dataFile.toPath())) {
       CsvToBeanBuilder<SplitDto> builder = new CsvToBeanBuilder<SplitDto>(reader)
         .withType(SplitDto.class)
         .withSeparator(';')
@@ -112,7 +118,7 @@ public class CsvService {
 
   public List<SplitTotalDto> readFileForTotal(CsvToBeanFilter filter) {
     // Read CSV file and return list of SplitDto objects
-    try (Reader reader = Files.newBufferedReader(DB_FILE.toPath())) {
+    try (Reader reader = Files.newBufferedReader(dataFile.toPath())) {
       CsvToBeanBuilder<SplitTotalDto> builder = new CsvToBeanBuilder<SplitTotalDto>(reader)
         .withType(SplitTotalDto.class)
         .withSeparator(';')
