@@ -1,4 +1,3 @@
-LABEL authors="Cendrine"
 # Dockerfile
 
 # Stage 1: Build Angular application
