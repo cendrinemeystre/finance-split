@@ -7,6 +7,9 @@ import com.opencsv.ICSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.CsvToBeanFilter;
+import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,15 +28,32 @@ public class CsvService {
   public String baseDir;
 
   @Value("${file.data:data.csv}")
-  public File dataFile;
+  public File dataFileName;
 
   @Value("${file.temp:temp.csv}")
   public String tempFile;
 
-  public CsvService() {
-    dataFile = new File(baseDir + "db.csv");
-    tempFile = baseDir + "temp.csv";
-    dataFile.mkdir();
+  private File dataFile;
+
+  private static final Logger LOG = LoggerFactory.getLogger(CsvService.class);
+
+  @PostConstruct
+  public void init() throws IOException {
+    // ensure directory exists
+    Path DATA_FILE = Path.of(baseDir + "/" + dataFileName);
+    LOG.info("File: {}", DATA_FILE);
+    //Files.createDirectories(DATA_FILE.getParent());
+    LOG.info("Created/Checked if the Directories exist");
+
+    // create file if it does not exist
+    if (!Files.exists(DATA_FILE)) {
+      LOG.info("The file does not exist, trying to create the File");
+      Files.createFile(DATA_FILE);
+      dataFile = DATA_FILE.toFile();
+    } else {
+      dataFile = DATA_FILE.toFile();
+      LOG.info("The File already exists: {}", dataFile.toPath());
+    }
   }
 
   public void addDto(SplitDto splitDto) {
