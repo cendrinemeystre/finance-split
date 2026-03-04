@@ -4,6 +4,7 @@ import {SplitEntry} from './split-entry';
 import {StatsControllerService} from './stats-controller.service';
 import {FinanceFilter} from './finance-filter';
 import {Person} from './person';
+import {environment} from '../../envrionment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class SplitController {
   }
 
   public findAll(): void {
-    this.http.get('http://localhost:8080/all').subscribe({
+    this.http.get(environment.apiUrl + 'all').subscribe({
       next: value => {
         this._splitEntryListSignal.set(<SplitEntry[]>value);
       }
@@ -40,7 +41,7 @@ export class SplitController {
       url += null;
     }
     console.log(url)
-    this.http.get('http://localhost:8080/filter/' + url).subscribe({
+    this.http.get(environment.apiUrl + '/filter/' + url).subscribe({
       next: value => {
         this._splitEntryListSignal.set(<SplitEntry[]>value);
       }
@@ -48,7 +49,7 @@ export class SplitController {
   }
 
   public add(entry: SplitEntry): void {
-    this.http.post('http://localhost:8080/add', entry).subscribe({
+    this.http.post(environment.apiUrl + 'add', entry).subscribe({
       next: value => {
         this._splitEntryListSignal.set(<SplitEntry[]>value);
         this.statsController.getStats();
@@ -57,7 +58,7 @@ export class SplitController {
   }
 
   public remove(id: string) {
-    this.http.delete('http://localhost:8080/remove/' + id).subscribe({
+    this.http.delete(environment.apiUrl + 'remove/' + id).subscribe({
       next: () => {
         this._splitEntryListSignal.update(e => {
           this.statsController.getStats();

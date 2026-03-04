@@ -1,6 +1,7 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StatDto} from './statDto';
+import {environment} from '../../envrionment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class StatsControllerService {
   }
 
   public getStats(): void {
-    this.http.get('http://localhost:8080/stats').subscribe({
+    this.http.get(environment.apiUrl + '/stats').subscribe({
       next: value => {
         this._statDto.set(<StatDto>value)
       }
