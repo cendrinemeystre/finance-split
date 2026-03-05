@@ -18,7 +18,7 @@ export class StatsControllerService {
   }
 
   public getStats(): void {
-    this.http.get(environment.apiUrl + '/stats').subscribe({
+    this.http.get(environment.apiUrl + 'stats').subscribe({
       next: value => {
         this._statDto.set(<StatDto>value)
       }
