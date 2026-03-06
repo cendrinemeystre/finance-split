@@ -38,21 +38,30 @@ public class CsvService {
   private static final Logger LOG = LoggerFactory.getLogger(CsvService.class);
 
   @PostConstruct
-  public void init() throws IOException {
+  public void init() {
     // ensure directory exists
-    Path DATA_FILE = Path.of(baseDir + "/" + dataFileName);
-    LOG.info("File: {}", DATA_FILE);
-    //Files.createDirectories(DATA_FILE.getParent());
-    LOG.info("Created/Checked if the Directories exist");
+    try {
+      Path DATA_FILE = Path.of(baseDir + "/" + dataFileName);
+      LOG.info("File: {}", DATA_FILE);
+      Files.createDirectories(DATA_FILE.getParent());
+      LOG.info("Created/Checked if the Directories exist");
 
-    // create file if it does not exist
-    if (!Files.exists(DATA_FILE)) {
-      LOG.info("The file does not exist, trying to create the File");
-      Files.createFile(DATA_FILE);
-      dataFile = DATA_FILE.toFile();
-    } else {
-      dataFile = DATA_FILE.toFile();
-      LOG.info("The File already exists: {}", dataFile.toPath());
+      // create file if it does not exist
+      if (!Files.exists(DATA_FILE)) {
+        LOG.info("The file does not exist, trying to create the File");
+        Files.createFile(DATA_FILE);
+        dataFile = DATA_FILE.toFile();
+      } else {
+        dataFile = DATA_FILE.toFile();
+        LOG.info("The File already exists: {}", dataFile.toPath());
+      }
+      LOG.info("Absolut Path: {}",dataFile.getAbsolutePath());
+    } catch (Exception e) {
+      LOG.error("Message: {}", e.getMessage());
+      LOG.error("Cause: {}", e.getCause().toString());
+      for (StackTraceElement el: e.getStackTrace()) {
+        LOG.error(el.toString());
+      }
     }
   }
 

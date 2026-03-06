@@ -28,7 +28,7 @@ public class SplitController {
   @GetMapping("/filter/{person}/{description}")
   public SplitDto[] findByPerson(@PathVariable("person") String person,
                                  @PathVariable("description") String description) {
-    return splitService.findByPerson(person, description);
+    return splitService.findBy(person, description);
   }
 
   @PostMapping("/add")

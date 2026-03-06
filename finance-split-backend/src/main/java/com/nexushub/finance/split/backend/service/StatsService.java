@@ -3,6 +3,8 @@ package com.nexushub.finance.split.backend.service;
 import com.nexushub.finance.split.backend.api.SplitTotalDto;
 import com.nexushub.finance.split.backend.api.StatsDto;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StatsService {
+  private static final Logger LOG = LoggerFactory.getLogger(StatsService.class);
+
   private CsvService csvService;
 
   public StatsDto getStats() {
@@ -23,6 +27,7 @@ public class StatsService {
         dto.setPatrick(getSum(dto.getPatrick(), splitDto.getAmount()));
       }
     }
+    LOG.debug("Get Stats: [Cendrine:{};Patrick:{};Total:{}]", dto.getCendrine(), dto.getPatrick(), dto.getTotal());
     return dto;
   }
 
