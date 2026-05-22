@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {Home} from './home/home';
 
 export const routes: Routes = [
@@ -6,17 +6,17 @@ export const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'split',
+        path: 'home',
         component: Home
       },
       {
         path: '**',
-        redirectTo: 'split'
+        redirectTo: 'home'
       }
     ]
   },
   {
     path: '**',
-    redirectTo: 'split'
+    redirectTo: 'home'
   }
 ];

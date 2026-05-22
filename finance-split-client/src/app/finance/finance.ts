@@ -1,12 +1,13 @@
-import {Component, signal} from '@angular/core';
-import {SplitController} from '../service/split-controller.service';
+import {Component, inject, signal} from '@angular/core';
 import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {FsDatePipe} from '../pipe/fs-date-pipe';
 import {DatePipe} from '@angular/common';
 import {FieldTree, form, FormField} from '@angular/forms/signals';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FinanceFilter} from '../service/finance-filter';
-import {Person} from '../service/person';
+import {FinanceStore} from '../service/finance.store';
+import {PersonStore} from '../service/person.store';
+import {PersonNamePipe} from '../pipe/person-name-pipe';
 
 @Component({
   selector: 'fs-finance',
@@ -16,39 +17,40 @@ import {Person} from '../service/person';
     DatePipe,
     ReactiveFormsModule,
     FormField,
-
+    PersonNamePipe
   ],
   templateUrl: './finance.html',
   styleUrl: './finance.css',
 })
 export class Finance {
+  protected readonly financeStore = inject(FinanceStore);
+  protected readonly personStore = inject(PersonStore);
+
   financeFilterForm: FieldTree<FinanceFilter>;
-  protected readonly Person: Person[] = [Person.BOTH, Person.CENDRINE, Person.PATRICK];
-  protected readonly defaulFormValue: FinanceFilter = {
-    person: Person.BOTH,
-    description: ''
+  protected readonly defaultFormValue: FinanceFilter = {
+    personId: '',
+    description: '',
+    amount: 0
   }
 
-  constructor(protected serviceController: SplitController) {
-    this.serviceController.findAll();
+  constructor() {
     this.financeFilterForm = form(signal<FinanceFilter>({
-      person: Person.BOTH,
-      description: ''
+      personId: '',
+      description: '',
+      amount: 0
     }))
   }
 
   public filter(): void {
-    this.serviceController.filter({
-      person: this.financeFilterForm.person().value(),
-      description: this.financeFilterForm.description().value()
-    })
+    this.financeStore.filter(this.financeFilterForm().value());
   }
 
   public clear(): void {
-    this.financeFilterForm().reset(this.defaulFormValue)
+    this.financeFilterForm().reset(this.defaultFormValue);
+    this.financeStore.clearFilter();
   }
 
   public remove(id: string): void {
-    this.serviceController.remove(id);
+    this.financeStore.delete(id);
   }
 }

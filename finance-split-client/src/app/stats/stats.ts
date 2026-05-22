@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {StatsControllerService} from '../service/stats-controller.service';
+import {Component, inject} from '@angular/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {PersonStore} from '../service/person.store';
 
 @Component({
   selector: 'fs-stats',
@@ -11,14 +11,14 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
   styleUrl: './stats.css',
 })
 export class Stats {
+  protected readonly personStore = inject(PersonStore);
   darkMode: boolean = true;
 
-  constructor(protected readonly statsController: StatsControllerService) {
-    statsController.getStats();
+  constructor() {
     this.changeTheme();
   }
 
-  public toggle(){
+  public toggle() {
     this.darkMode = !this.darkMode;
     this.changeTheme();
   }

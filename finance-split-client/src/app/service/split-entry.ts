@@ -1,7 +1,7 @@
 export interface SplitEntry {
   id?: string;
   localDateTime?: Date;
-  person: boolean;
+  personId: string;
   amount: number;
   description: string;
 }

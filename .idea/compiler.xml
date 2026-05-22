@@ -3,20 +3,34 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for finance-split-backend" enabled="true">
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
-        </processorPath>
-        <module name="finance-split-backend" />
+        <module name="finance-split-openapi-spec" />
+        <module name="finance-split-rest" />
+        <module name="finance-split-domainservice" />
+        <module name="finance-split-client" />
+        <module name="finance-split-api" />
+        <module name="finance-split-server" />
+        <module name="finance-split-domain" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="finance-split-backend" target="25" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="finance-split" options="" />
+      <module name="finance-split-api" options="-parameters" />
       <module name="finance-split-backend" options="-parameters" />
+      <module name="finance-split-client" options="-parameters" />
+      <module name="finance-split-domain" options="-parameters" />
+      <module name="finance-split-domainservice" options="-parameters" />
+      <module name="finance-split-openapi-spec" options="-parameters" />
+      <module name="finance-split-rest" options="-parameters" />
+      <module name="finance-split-server" options="-parameters" />
     </option>
   </component>
 </project>

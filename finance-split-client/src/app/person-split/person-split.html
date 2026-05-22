@@ -1,0 +1,50 @@
+@if (this.personStore.persons().length > 0) {
+  <div class="card">
+    <div class="card-header">
+      @if (personStore.persons().length > 1) {
+        <h1 class="modal-title d-flex align-items-center">
+          Split:
+          <div class="ms-2">
+            <select class="form-select form-select-lg" id="floatingSelect" aria-label="Select Person" [formField]="splitEntryForm.personId">
+              @for (person of personStore.persons(); track person.id) {
+                <option [value]="person.id">{{ person.name }}</option>
+              }
+            </select>
+          </div>
+        </h1>
+      } @else {
+        <h1 class="modal-title d-flex align-items-center justify-content-between">
+          Split: {{ personStore.persons()[0].name }}
+        </h1>
+      }
+    </div>
+    <div class="card-body">
+      <div class="d-flex">
+        <label for="amount" class="me-2 form-label">
+          Amount:
+          <input type="number" class="form-control" [formField]="splitEntryForm.amount">
+          @for (error of this.splitEntryForm.amount().errors(); track error) {
+            <p class="text-danger-emphasis">{{ error.message }}</p>
+          }
+        </label>
+        <label for="description" class="me-2 form-label flex-fill">
+          Description:
+          <input class="form-control" type="text" [formField]="splitEntryForm.description">
+        </label>
+      </div>
+      <div>
+        <ul class="list-group">
+          @for (suggestion of suggestions; track suggestion) {
+            <li class="list-group-item">
+              <input type="radio" [value]="suggestion" [formField]="splitEntryForm.description"/>
+              {{ suggestion }}
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <button class="btn btn-success" [disabled]="splitEntryForm().invalid()" (click)="add()">Save</button>
+    </div>
+  </div>
+}

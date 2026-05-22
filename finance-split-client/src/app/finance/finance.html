@@ -10,9 +10,9 @@
       </label>
       <label class="form-labelflex-column">
         Person:
-        <select class="form-select" [formField]="financeFilterForm.person">
-          @for (person of Person; track person) {
-            <option [value]="person">{{ person }}</option>
+        <select class="form-select" [formField]="financeFilterForm.personId">
+          @for (person of personStore.persons(); track person.id) {
+            <option [value]="person.id">{{ person.name }}</option>
           }
         </select>
       </label>
@@ -26,8 +26,7 @@
   </div>
   <hr>
   <div class="card-body table-responsive">
-    @let list = serviceController.splitEntryList$();
-    @if (list.length > 0) {
+    @if (financeStore.finances().length > 0) {
       <table class="table table-striped">
         <thead>
         <tr>
@@ -39,20 +38,20 @@
         </tr>
         </thead>
         <tbody>
-          @for (entry of list; track entry.id) {
+          @for (entry of financeStore.finances(); track entry.id) {
             <tr>
               <td>
-                <p [ngbTooltip]="entry.localDateTime | fsDate">
-                  {{ entry.localDateTime | date }}
+                <p [ngbTooltip]="entry.dateTime | fsDate">
+                  {{ entry.dateTime | date }}
                 </p>
               </td>
               <td>{{ entry.amount }}</td>
               <td>{{ entry.description }}</td>
-              <td>{{ entry.person ? 'Cendrine' : 'Patrick' }}</td>
+              <td>{{ personStore.persons() | personName: entry.personId }}</td>
               <td>
                 @if (entry.id) {
-                  <button class="btn btn-outline-danger" (click)="remove(entry!.id)">
-                    <span class="fas fa-trash"></span>
+                  <button class="btn btn-outline-danger btn-sm" (click)="remove(entry!.id)">
+                    <span class="fas fa-x"></span>
                   </button>
                 }
               </td>

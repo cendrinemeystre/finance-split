@@ -5,7 +5,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class FsDatePipe implements PipeTransform {
 
-  transform(value: Date | undefined): string {
+  transform(value: string | undefined): string {
     if (!value) {
       return '';
     }

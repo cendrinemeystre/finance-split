@@ -10,18 +10,16 @@
     <div class="row">
       <label>
         Total:
-        <input type="text" class="form-control" [disabled]="true" [value]="statsController.statDto$().total">
+        <input type="text" class="form-control" [disabled]="true" [value]="personStore.totalSum()">
       </label>
     </div>
     <div class="row d-flex">
-      <label class="col-6 flex-fill">
-        Cendrine:
-        <input type="text" class="form-control" [disabled]="true" [value]="statsController.statDto$().cendrine">
-      </label>
-      <label class="col-6 flex-fill">
-        Patrick:
-        <input type="text" class="form-control" [disabled]="true" [value]="statsController.statDto$().patrick">
-      </label>
+      @for (person of personStore.persons(); track person.id) {
+        <label class="col-6 flex-fill">
+          {{ person.name }}:
+          <input type="text" class="form-control" [disabled]="true" [value]="person.total">
+        </label>
+      }
     </div>
   </div>
 </div>

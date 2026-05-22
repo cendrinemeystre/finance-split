@@ -1,15 +1,16 @@
 <div class="container-fluid" [ngClass]="isMobile() ? '' : 'row'">
   @if (isMobile()) {
     <fs-stats class="pe-1"></fs-stats>
-    <fs-split class="pe-1"></fs-split>
-    <fs-finance></fs-finance>
+    <fs-person-split class="pe-1"></fs-person-split>
+    <fs-person-manage></fs-person-manage>    <fs-finance></fs-finance>
   } @else {
     <div class="col-6">
-      <fs-finance></fs-finance>
+      <fs-finance class="pe-1"></fs-finance>
     </div>
     <div class="col-6">
       <fs-stats class="pe-1"></fs-stats>
-      <fs-split></fs-split>
+      <fs-person-split class="pe-1"></fs-person-split>
+      <fs-person-manage></fs-person-manage>
     </div>
   }
 </div>

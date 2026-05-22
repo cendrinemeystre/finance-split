@@ -1,6 +1,5 @@
-import {Person} from './person';
-
 export interface FinanceFilter {
-  person: Person,
-  description: string
+  personId: string,
+  description: string,
+  amount: number
 }
