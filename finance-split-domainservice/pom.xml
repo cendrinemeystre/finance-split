@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>finance-split-domainservice</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
