@@ -1,12 +1,8 @@
 import {Component, inject} from '@angular/core';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {PersonStore} from '../service/person.store';
 
 @Component({
   selector: 'fs-stats',
-  imports: [
-    MatSlideToggle
-  ],
   templateUrl: './stats.html',
   styleUrl: './stats.css',
 })

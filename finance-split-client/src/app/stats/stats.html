@@ -2,9 +2,9 @@
   <div class="card-header d-flex justify-content-between">
     <h1 class="modal-title">Stats</h1>
     <img src="assets/images/ibby.jpeg" height="60" width="55" alt="ibby"/>
-    <mat-slide-toggle class="pt-3 form-label align-self-center mat-mdc-slide-toggle mat-accent"
-                      (change)="toggle()">
-    </mat-slide-toggle>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault" (change)="toggle()">
+    </div>
   </div>
   <div class="card-body">
     <div class="row">
