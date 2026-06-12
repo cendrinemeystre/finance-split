@@ -6,6 +6,12 @@ import {FinanceStore} from '../service/finance.store';
 import {FinanceDataDto} from '../core/core-api';
 import {FormsModule} from '@angular/forms';
 
+const DEFAULT_SPLIT_ENTRY_VALUE: SplitEntry = {
+  amount: 0,
+  personId: '',
+  description: ''
+}
+
 @Component({
   selector: 'fs-person-split',
   imports: [
@@ -18,7 +24,6 @@ import {FormsModule} from '@angular/forms';
 export class PersonSplit {
   protected readonly personStore = inject(PersonStore);
   private readonly financeStore = inject(FinanceStore);
-
   splitEntryForm: FieldTree<SplitEntry>;
   suggestions: string[] = [
     'Ibby',
@@ -42,12 +47,16 @@ export class PersonSplit {
     });
   }
 
-  public add(): void {
+  add(): void {
     const entry: FinanceDataDto = {
       personId: this.splitEntryForm.personId().value(),
       amount: this.splitEntryForm.amount().value(),
       description: this.splitEntryForm.description().value(),
     };
     this.financeStore.create(entry);
+  }
+
+  clear(): void  {
+    this.splitEntryForm().reset(DEFAULT_SPLIT_ENTRY_VALUE);
   }
 }

@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
+import {NgbPagination, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {FsDatePipe} from '../pipe/fs-date-pipe';
 import {DatePipe} from '@angular/common';
 import {FieldTree, form, FormField} from '@angular/forms/signals';
@@ -17,7 +17,8 @@ import {PersonNamePipe} from '../pipe/person-name-pipe';
     DatePipe,
     ReactiveFormsModule,
     FormField,
-    PersonNamePipe
+    PersonNamePipe,
+    NgbPagination
   ],
   templateUrl: './finance.html',
   styleUrl: './finance.css',

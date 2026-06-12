@@ -14,7 +14,13 @@ export const PersonStore = signalStore(
   {providedIn: 'root'},
   withState(initialState),
   withComputed(({persons}) => ({
-    totalSum: computed(() => persons().reduce((sum, p) => sum + (p.total ?? 0), 0))
+    totalSum: computed(() => persons().reduce((sum, p) => sum + (p.total ?? 0), 0)),
+    diff: computed(() => {
+      let map: number[] = persons().map(p=>p.total || 0);
+      let min = Math.min(...map);
+      let max = Math.max(...map);
+      return max - min;
+    })
   })),
   withMethods((store, personService = inject(PersonControllerService)) => ({
     findAll(): void {

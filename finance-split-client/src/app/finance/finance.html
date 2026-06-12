@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <h1 class="modal-title">Finance</h1>
+    <h3 class="modal-title">Finance</h3>
   </div>
   <div class="card-body row d-flex">
     <div class="col-8">
@@ -26,7 +26,7 @@
   </div>
   <hr>
   <div class="card-body table-responsive">
-    @if (financeStore.finances().length > 0) {
+    @if (financeStore.totalItems() > 0) {
       <table class="table table-striped">
         <thead>
         <tr>
@@ -38,7 +38,7 @@
         </tr>
         </thead>
         <tbody>
-          @for (entry of financeStore.finances(); track entry.id) {
+          @for (entry of financeStore.currentPageItems(); track entry.id) {
             <tr>
               <td>
                 <p [ngbTooltip]="entry.dateTime | fsDate">
@@ -59,6 +59,22 @@
           }
         </tbody>
       </table>
+      <div class="d-flex  flex-fill justify-content-evenly">
+        <div>
+          <ngb-pagination
+            [collectionSize]="financeStore.totalItems()"
+            [page]="financeStore.currentPage()"
+            [pageSize]="10"
+            [maxSize]="5"
+            [rotate]="true"
+            [boundaryLinks]="true"
+            (pageChange)="financeStore.setPage($event)"
+          />
+        </div>
+        <div class="ms-auto me-2 align-self-center">
+          <p>Total: {{financeStore.totalItems()}}</p>
+        </div>
+      </div>
     } @else {
       <p class="card-text">No Entries</p>
     }

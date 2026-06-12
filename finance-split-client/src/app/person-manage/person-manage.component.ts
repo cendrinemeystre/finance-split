@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {PersonStore} from '../service/person.store';
 import {FieldTree, form, FormField, required} from '@angular/forms/signals';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -25,6 +25,8 @@ export class PersonManage {
     name: '',
     total: 0
   }
+  protected readonly showCard: WritableSignal<boolean> = signal(false);
+
   personForm: FieldTree<Person>;
 
   constructor() {
@@ -42,5 +44,9 @@ export class PersonManage {
   remove(id: string): void {
     this.personStore.delete(id);
     this.financeStore.findAll();
+  }
+
+  toggle(): void {
+    this.showCard.set(!this.showCard())
   }
 }

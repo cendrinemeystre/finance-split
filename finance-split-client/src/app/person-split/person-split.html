@@ -2,16 +2,17 @@
   <div class="card">
     <div class="card-header">
       @if (personStore.persons().length > 1) {
-        <h1 class="modal-title d-flex align-items-center">
+        <h3 class="modal-title d-flex align-items-center">
           Split:
           <div class="ms-2">
-            <select class="form-select form-select-lg" id="floatingSelect" aria-label="Select Person" [formField]="splitEntryForm.personId">
+            <select class="form-select form-select-lg" id="floatingSelect" aria-label="Select Person"
+                    [formField]="splitEntryForm.personId">
               @for (person of personStore.persons(); track person.id) {
                 <option [value]="person.id">{{ person.name }}</option>
               }
             </select>
           </div>
-        </h1>
+        </h3>
       } @else {
         <h1 class="modal-title d-flex align-items-center justify-content-between">
           Split: {{ personStore.persons()[0].name }}
@@ -43,7 +44,8 @@
         </ul>
       </div>
     </div>
-    <div class="card-footer text-end">
+    <div class="card-footer d-flex justify-content-between">
+      <button class="btn btn-sm btn-outline-secondary" (click)="clear()">Clear</button>
       <button class="btn btn-success" [disabled]="splitEntryForm().invalid()" (click)="add()">Save</button>
     </div>
   </div>

@@ -32,7 +32,7 @@ public class FinanceServiceImpl implements FinanceService {
 
   @Override
   public FinanceDataDto[] findAll() {
-    return financeRepository.findAll().stream()
+    return financeRepository.findAllOrdered().stream()
       .map(financeDataConverter::convertToDto)
       .toArray(FinanceDataDto[]::new);
   }
